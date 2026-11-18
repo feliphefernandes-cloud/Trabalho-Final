@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  /* ---------- Constantes ---------- */
+  
   var W = 900, H = 420, GROUND = 350, S = 3, TIME = 60;
-  var DX = 100;                       // posição horizontal do dino
-  var GROUND_TOP = GROUND - 29 * S;   // y do topo do sprite quando está no chão
+  var DX = 100;                       
+  var GROUND_TOP = GROUND - 29 * S;   
   var FONT = "'Lilita One','Arial Black',Impact,sans-serif";
   var LETTERS = ['#2f7de1', '#e8434f', '#ffd23f', '#35b34a'];
 
@@ -17,7 +17,7 @@
   ctx.imageSmoothingEnabled = false;
   if (document.fonts && document.fonts.load) { document.fonts.load("40px 'Lilita One'"); }
 
-  /* ---------- Gerador de sprites pixel art ---------- */
+
   function makeGrid(w, h) {
     var px = [];
     for (var y = 0; y < h; y++) { px.push(new Array(w).fill(null)); }
@@ -63,37 +63,37 @@
     return c;
   }
 
-  /* ---------- Brachiosaurus (3 quadros: corrida A, corrida B, pulo) ---------- */
+  
   var INK = '#24123a', G = '#3fbf4f', D = '#2a8f43', DD = '#1c6b30', L = '#b9f27c', O = '#ff9d1c', P = '#ff7aa8';
   function dinoSprite(frame) {
     var g = makeGrid(36, 30);
     var h = frame === 2 ? [7, 7, 7, 7] : (frame === 0 ? [9, 7, 7, 9] : [7, 9, 9, 7]);
-    // pernas: traseira longe, traseira perto, dianteira perto, dianteira longe
+   
     var legs = [[11, D, DD, h[1]], [22, D, DD, h[3]], [7, G, D, h[0]], [18, G, D, h[2]]];
     legs.forEach(function (l) {
       var bottom = 28, top = bottom - l[3] + 1;
       rect(g, l[0], top, 3, l[3], l[1]);
       rect(g, l[0], bottom, 4, 1, l[2]);
     });
-    ell(g, 4, 16, 4, 2, G); ell(g, 1.5, 14.5, 2, 1, G);        // cauda
-    ell(g, 15, 16, 10, 6, G);                                   // corpo
-    ell(g, 15, 19, 8, 3, L, G);                                 // barriga clara
-    rect(g, 10, 12, 2, 2, O, G); rect(g, 15, 11, 2, 2, O, G);   // manchas laranja
+    ell(g, 4, 16, 4, 2, G); ell(g, 1.5, 14.5, 2, 1, G);       
+    ell(g, 15, 16, 10, 6, G);                                  
+    ell(g, 15, 19, 8, 3, L, G);                                 
+    rect(g, 10, 12, 2, 2, O, G); rect(g, 15, 11, 2, 2, O, G);   
     rect(g, 20, 13, 2, 2, O, G); rect(g, 13, 15, 1, 1, D, G);
-    for (var i = 0; i <= 24; i++) {                             // pescoço longo
+    for (var i = 0; i <= 24; i++) {                             
       var t = i / 24;
       ell(g, 22 + t * 5, 13 - t * 10, 2.6, 2.6, G);
     }
     put(g, 24, 9, O, G); put(g, 25, 6, O, G); put(g, 23, 11, O, G);
-    ell(g, 29, 3, 3, 2.2, G); ell(g, 31.5, 4, 2.2, 1.6, G);     // cabeça e focinho
-    put(g, 29, 2, '#ffffff'); put(g, 30, 2, INK);               // olho
-    put(g, 29, 4, P); put(g, 32, 3, D);                         // bochecha e narina
+    ell(g, 29, 3, 3, 2.2, G); ell(g, 31.5, 4, 2.2, 1.6, G);     
+    put(g, 29, 2, '#ffffff'); put(g, 30, 2, INK);              
+    put(g, 29, 4, P); put(g, 32, 3, D);                         
     outline(g, INK);
     return toCanvas(g);
   }
   var dinoFrames = [dinoSprite(0), dinoSprite(1), dinoSprite(2)];
 
-  /* ---------- Nuvem e morro (parallax) ---------- */
+
   function cloudSprite() {
     var g = makeGrid(48, 22);
     ell(g, 12, 14, 9, 5, '#ffffff'); ell(g, 24, 10, 11, 8, '#ffffff'); ell(g, 37, 14, 9, 5, '#ffffff');
@@ -121,30 +121,30 @@
   });
   [[60, 5], [380, 4], [700, 6]].forEach(function (h) { hills.push({ x: h[0], s: h[1] }); });
 
-  /* ---------- Cacto (3 tamanhos) ---------- */
+ 
   function cactusSprite(th, arms) {
     var oy = 2, C = G, g = makeGrid(24, th + 8), b = oy + th + 3;
     var hasL = arms === 'LR', ay = oy + 4 + Math.floor(th * 0.5), ayR = hasL ? ay - 3 : ay;
     var boxes = [[9, oy + 1, 6, b - oy]];
-    rect(g, 9, oy + 3, 6, th + 1, C); ell(g, 11.5, oy + 3, 3, 3, C);       // tronco
-    if (hasL) {                                                            // braço esquerdo
+    rect(g, 9, oy + 3, 6, th + 1, C); ell(g, 11.5, oy + 3, 3, 3, C);       
+    if (hasL) {                                                            
       rect(g, 4, ay, 5, 3, C); rect(g, 4, ay - 5, 3, 8, C); ell(g, 5.5, ay - 5, 1.4, 1.5, C);
       boxes.push([4, ay - 5, 5, 8]);
     }
-    rect(g, 15, ayR, 5, 3, C); rect(g, 18, ayR - 5, 3, 8, C); ell(g, 19.5, ayR - 5, 1.4, 1.5, C); // braço direito
+    rect(g, 15, ayR, 5, 3, C); rect(g, 18, ayR - 5, 3, 8, C); ell(g, 19.5, ayR - 5, 1.4, 1.5, C); 
     boxes.push([15, ayR - 5, 6, 8]);
-    rect(g, 10, oy + 5, 1, th - 3, '#8be87f', C);                           // luz
-    rect(g, 13, oy + 4, 2, th, D, C);                                       // sombra
+    rect(g, 10, oy + 5, 1, th - 3, '#8be87f', C);                           
+    rect(g, 13, oy + 4, 2, th, D, C);                                       
     if (hasL) rect(g, 6, ay - 4, 1, 6, D, C);
     rect(g, 20, ayR - 4, 1, 6, D, C);
-    for (var y = oy + 6; y < b - 1; y += 5) { put(g, 11, y, '#e8ffb5', C); put(g, 12, y + 2, '#e8ffb5', C); } // espinhos
-    ell(g, 11.5, oy - 0.5, 2, 1.2, P); put(g, 11, 1, '#ffe14d');            // flor
+    for (var y = oy + 6; y < b - 1; y += 5) { put(g, 11, y, '#e8ffb5', C); put(g, 12, y + 2, '#e8ffb5', C); } 
+    ell(g, 11.5, oy - 0.5, 2, 1.2, P); put(g, 11, 1, '#ffe14d');           
     outline(g, INK);
     return { img: toCanvas(g), rows: b + 1, gh: th + 8, boxes: boxes, hVis: (b + 1) * S - 3 };
   }
   var CACTUS = [cactusSprite(14, 'R'), cactusSprite(20, 'LR'), cactusSprite(28, 'LR')];
 
-  /* ---------- Estado do jogo ---------- */
+ 
   var state = 'ready', reason = '';
   var coins = 0, timeLeft = TIME, speed = 6, steps = 0, tick = 0, groundOff = 0;
   var distCactus = 0, distCoin = 0;
@@ -174,7 +174,7 @@
     if (state === 'playing' && onGround) { vy = -17; onGround = false; }
   }
 
-  /* ---------- Entrada ---------- */
+  
   window.addEventListener('keydown', function (e) {
     var jumpKey = e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW';
     if (!jumpKey && e.code !== 'Enter') return;
@@ -187,7 +187,7 @@
   cv.addEventListener('pointerdown', function (e) { e.preventDefault(); jump(); });
   btn.addEventListener('click', start);
 
-  /* ---------- Simulação ---------- */
+
   function hit(a, b) { return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
   function dinoBoxes() {
     var m = 3;
@@ -263,7 +263,7 @@
     else if (state === 'ready') { steps++; scrollWorld(3); }
   }
 
-  /* ---------- Desenho ---------- */
+
   var sky = ctx.createLinearGradient(0, 0, 0, GROUND);
   sky.addColorStop(0, '#4fb0ee'); sky.addColorStop(1, '#e1f5fd');
 
@@ -380,7 +380,7 @@
     }
   }
 
-  /* ---------- Loop (passo fixo de 60 Hz) ---------- */
+ 
   var last = performance.now(), acc = 0, STEP = 1000 / 60;
   function frame(now) {
     acc += Math.min(100, now - last); last = now;
