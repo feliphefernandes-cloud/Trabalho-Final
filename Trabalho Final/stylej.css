@@ -1,0 +1,46 @@
+{
+  --bg: #14122e;
+  --fg: #eceaff;
+  --muted: #a9a5d6;
+  --accent: #ffe14d;
+  --accent-shadow: #b8941a;
+  --blue: #1f4fd8;
+  --line: #2c2760;
+  --display: 'Lilita One', 'Arial Black', Impact, sans-serif;
+  --body: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.5 var(--body);
+  padding-block: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+h1 { font: 400 clamp(28px, 6vw, 40px)/1.1 var(--display); letter-spacing: .02em; margin: 0 0 4px; color: var(--accent); text-wrap: balance; }
+.sub { margin: 0; color: var(--muted); font-size: 14px; max-width: 65ch; }
+.stage {
+  position: relative; width: 100%; aspect-ratio: 900 / 420;
+  border: 3px solid var(--line); border-radius: 14px; overflow: hidden;
+  background: #4fb0ee; box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+}
+canvas { display: block; width: 100%; height: 100%; touch-action: none; outline: none; }
+#btn {
+  position: absolute; left: 50%; top: 68%; transform: translateX(-50%);
+  font: 400 clamp(15px, 3.2vw, 24px)/1 var(--display); letter-spacing: .06em;
+  padding: .45em 1.2em; border-radius: 10px; border: 3px solid var(--blue);
+  background: var(--accent); color: var(--blue); cursor: pointer;
+  box-shadow: 0 5px 0 var(--accent-shadow);
+}
+#btn:hover { filter: brightness(1.07); }
+#btn:active { transform: translateX(-50%) translateY(3px); box-shadow: 0 2px 0 var(--accent-shadow); }
+#btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.hint { margin: 0; color: var(--muted); font-size: 14px; }
+kbd {
+  font: 600 12px var(--body); background: #24204f; border: 1px solid var(--line);
+  border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; color: var(--fg);
+}
