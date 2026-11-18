@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  /* ---------- Constantes ---------- */
+  
   var W = 900, H = 420, GROUND = 350, S = 3, TIME = 60;
-  var DX = 100;                       // posição horizontal do dino
-  var GROUND_TOP = GROUND - 29 * S;   // y do topo do sprite quando está no chão
+  var DX = 100;                       
+  var GROUND_TOP = GROUND - 29 * S;   
   var FONT = "'Lilita One','Arial Black',Impact,sans-serif";
   var LETTERS = ['#2f7de1', '#e8434f', '#ffd23f', '#35b34a'];
 
@@ -17,7 +17,7 @@
   ctx.imageSmoothingEnabled = false;
   if (document.fonts && document.fonts.load) { document.fonts.load("40px 'Lilita One'"); }
 
-  /* ---------- Gerador de sprites pixel art ---------- */
+  
   function makeGrid(w, h) {
     var px = [];
     for (var y = 0; y < h; y++) { px.push(new Array(w).fill(null)); }
@@ -63,7 +63,7 @@
     return c;
   }
 
-  /* ---------- Brachiosaurus (3 quadros: corrida A, corrida B, pulo) ---------- */
+
   var INK = '#24123a', G = '#3fbf4f', D = '#2a8f43', DD = '#1c6b30', L = '#b9f27c', O = '#ff9d1c', P = '#ff7aa8';
   function dinoSprite(frame) {
     var g = makeGrid(36, 30);
@@ -93,7 +93,7 @@
   }
   var dinoFrames = [dinoSprite(0), dinoSprite(1), dinoSprite(2)];
 
-  /* ---------- Nuvem e morro (parallax) ---------- */
+  
   function cloudSprite() {
     var g = makeGrid(48, 22);
     ell(g, 12, 14, 9, 5, '#ffffff'); ell(g, 24, 10, 11, 8, '#ffffff'); ell(g, 37, 14, 9, 5, '#ffffff');
@@ -121,7 +121,7 @@
   });
   [[60, 5], [380, 4], [700, 6]].forEach(function (h) { hills.push({ x: h[0], s: h[1] }); });
 
-  /* ---------- Cacto (3 tamanhos) ---------- */
+  
   function cactusSprite(th, arms) {
     var oy = 2, C = G, g = makeGrid(24, th + 8), b = oy + th + 3;
     var hasL = arms === 'LR', ay = oy + 4 + Math.floor(th * 0.5), ayR = hasL ? ay - 3 : ay;
@@ -144,7 +144,7 @@
   }
   var CACTUS = [cactusSprite(14, 'R'), cactusSprite(20, 'LR'), cactusSprite(28, 'LR')];
 
-  /* ---------- Estado do jogo ---------- */
+  
   var state = 'ready', reason = '';
   var coins = 0, timeLeft = TIME, speed = 6, steps = 0, tick = 0, groundOff = 0;
   var distCactus = 0, distCoin = 0;
@@ -174,7 +174,7 @@
     if (state === 'playing' && onGround) { vy = -17; onGround = false; }
   }
 
-  /* ---------- Entrada ---------- */
+  
   window.addEventListener('keydown', function (e) {
     var jumpKey = e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW';
     if (!jumpKey && e.code !== 'Enter') return;
@@ -187,7 +187,7 @@
   cv.addEventListener('pointerdown', function (e) { e.preventDefault(); jump(); });
   btn.addEventListener('click', start);
 
-  /* ---------- Simulação ---------- */
+  
   function hit(a, b) { return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
   function dinoBoxes() {
     var m = 3;
@@ -263,7 +263,7 @@
     else if (state === 'ready') { steps++; scrollWorld(3); }
   }
 
-  /* ---------- Desenho ---------- */
+  
   var sky = ctx.createLinearGradient(0, 0, 0, GROUND);
   sky.addColorStop(0, '#4fb0ee'); sky.addColorStop(1, '#e1f5fd');
 
@@ -380,7 +380,7 @@
     }
   }
 
-  /* ---------- Loop (passo fixo de 60 Hz) ---------- */
+  
   var last = performance.now(), acc = 0, STEP = 1000 / 60;
   function frame(now) {
     acc += Math.min(100, now - last); last = now;
